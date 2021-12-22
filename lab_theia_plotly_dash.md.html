@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lab_theia_plotly_dash.md_files/bootstrap.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="lab_theia_plotly_dash.md_files/default.css">
+  <style type="text/css">/* this file is used for labs on cognitiveclass.ai that were written in markdown */
+
+/* applies to images, i.e. "![]()" in markdown */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* add padding and margins */
+body {
+  padding: 10px;
+  margin: 10px;
+}
+
+/* applies to tables, i.e. "|--|--|" in markdown */
+table td,
+table th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+/* applies to using quotes, i.e. ">" in markdown */
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 1em 10px 0.1em 10px;
+  quotes: '\201C''\201D''\2018''\2019';
+}
+
+/* the headers need some spacing */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  padding-top: 20px;
+}
+
+/* Add padding between nested list item */
+ul > li > ul {
+  padding-bottom: 1rem;
+}
+
+.code-badge-language {
+  display: none;
+}
+.code-badge-copy-icon {
+  background: url('data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhciIgZGF0YS1pY29uPSJjb3B5IiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY29weSBmYS13LTE0IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ0OCA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQzMy45NDEgNjUuOTQxbC01MS44ODItNTEuODgyQTQ4IDQ4IDAgMCAwIDM0OC4xMTggMEgxNzZjLTI2LjUxIDAtNDggMjEuNDktNDggNDh2NDhINDhjLTI2LjUxIDAtNDggMjEuNDktNDggNDh2MzIwYzAgMjYuNTEgMjEuNDkgNDggNDggNDhoMjI0YzI2LjUxIDAgNDgtMjEuNDkgNDgtNDh2LTQ4aDgwYzI2LjUxIDAgNDgtMjEuNDkgNDgtNDhWOTkuODgyYTQ4IDQ4IDAgMCAwLTE0LjA1OS0zMy45NDF6TTI2NiA0NjRINTRhNiA2IDAgMCAxLTYtNlYxNTBhNiA2IDAgMCAxIDYtNmg3NHYyMjRjMCAyNi41MSAyMS40OSA0OCA0OCA0OGg5NnY0MmE2IDYgMCAwIDEtNiA2em0xMjgtOTZIMTgyYTYgNiAwIDAgMS02LTZWNTRhNiA2IDAgMCAxIDYtNmgxMDZ2ODhjMCAxMy4yNTUgMTAuNzQ1IDI0IDI0IDI0aDg4djIwMmE2IDYgMCAwIDEtNiA2em02LTI1NmgtNjRWNDhoOS42MzJjMS41OTEgMCAzLjExNy42MzIgNC4yNDMgMS43NTdsNDguMzY4IDQ4LjM2OGE2IDYgMCAwIDEgMS43NTcgNC4yNDNWMTEyeiI+PC9wYXRoPjwvc3ZnPg==');
+  background-size: 100% 100%;
+}
+
+.code-badge {
+  bottom: 0 !important;
+  top: unset !important;
+  background: unset !important;
+}
+
+.code-badge > .code-badge-check-icon {
+  background: green;
+}
+.code-badge-check-icon {
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 7px;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGFyaWEtaGlkZGVuPSJ0cnVlIiBmb2N1c2FibGU9ImZhbHNlIiBkYXRhLXByZWZpeD0iZmFzIiBkYXRhLWljb249ImNoZWNrIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY2hlY2sgZmEtdy0xNiIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9IiYjMTA7ICAgIGNvbG9yOiAjMmFmZjMyOyYjMTA7Ij48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiLz48L3N2Zz4=');
+  background-size: 100% 100%;
+}
+</style></head>
+  <body>
+    <center>
+      <img src="lab_theia_plotly_dash.md_files/logo.png" alt="cognitiveclass.ai logo" width="300">
+    </center>
+    <h1>Build a Dashboard Application with Plotly Dash</h1>
+    <p>
+      In this lab, you will be building a Plotly Dash application for 
+users to perform interactive visual analytics on SpaceX launch data in
+      real-time.
+    </p>
+    <p>
+      This dashboard application contains input components such as a 
+dropdown list and a range slider to
+      interact with a pie chart and a scatter point chart. You will be 
+guided to build this dashboard application via the following tasks:
+    </p>
+    <ul>
+      <li>TASK 1: Add a Launch Site Drop-down Input Component</li>
+      <li>TASK 2: Add a callback function to render <code>success-pie-chart</code> based on selected site dropdown</li>
+      <li>TASK 3: Add a Range Slider to Select Payload</li>
+      <li>TASK 4: Add a callback function to render the <code>success-payload-scatter-chart</code> scatter plot</li>
+    </ul>
+    <p><em><strong>Note:Please take screenshots of the Dashboard and save them. Further upload your notebook to github.</strong></em></p>
+    <p><em><strong>The github url and the screenshots are later required in the presentation slides.</strong></em></p>
+    <p>Your completed dashboard application should look like the following screenshot:</p>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/dash_completed.PNG" alt="">
+    </p>
+    <p>After visual analysis using the dashboard, you should be able to obtain some insights to answer the following five questions:</p>
+    <ol>
+      <li>Which site has the largest successful launches?</li>
+      <li>Which site has the highest launch success rate?</li>
+      <li>Which payload range(s) has the highest launch success rate?</li>
+      <li>Which payload range(s) has the lowest launch success rate?</li>
+      <li>Which F9 Booster version (<code>v1.0</code>, <code>v1.1</code>, <code>FT</code>, <code>B4</code>, <code>B5</code>, etc.) has the highest</li>
+    </ol>
+    <p>launch success rate?</p>
+    <p><strong>Estimated time needed:</strong> 90 minutes</p>
+    <h2>Important Notice about this lab environment</h2>
+    <p>
+      Please be aware that sessions for this lab environment are not 
+persisted. When you launch the Cloud IDE, you are presented with a 
+'dedicated computer on the cloud' exclusively for you. This is available
+ to you as long as you are actively working on the labs.
+      Once you close your session or it is timed out due to inactivity,
+      you are logged off, and this <code>dedicated computer on the cloud</code> is deleted along with any files you may have created, downloaded or installed.
+    </p>
+    <p>
+      The next time you launch this lab, a new environment is created 
+for you.
+      If you finish only part of the lab and return later, you may have 
+to start from the beginning. So, it is a good idea to plan your time 
+accordingly and finish your labs in a single session.
+    </p>
+    <h2>Setup development environment</h2>
+    <h3>Install required Python packages</h3>
+    <ul>
+      <li>Open a new terminal, by clicking on the menu bar and selecting <strong>Terminal</strong>-&gt;<strong>New Terminal</strong>, as in the image below.</li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/lab2_new_terminal.png" alt="">
+    </p>
+    <ul>
+      <li>Now, you have script and terminal ready to start the lab.</li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/lab2_terminal.png" alt="">
+    </p>
+    <ul>
+      <li>Install python packages required to run the application.</li>
+    </ul>
+    <p>Copy and paste the below command to the terminal.</p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">cmake</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-cmake">pip3 <span class="hljs-keyword">install</span> pandas dash
+</code></pre>
+    <p></p>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/install.png" alt="">
+    </p>
+    <h3>Download a skeleton dashboard application and dataset</h3>
+    <p>First, let's get the SpaceX Launch dataset for this lab:</p>
+    <ul>
+      <li>Run the following <code>wget</code> command line in the terminal to download dataset as <code>spacex_launch_dash.csv</code></li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">nginx</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-nginx"><span class="hljs-attribute"><span class="hljs-attribute">wget</span></span> <span class="hljs-string"><span class="hljs-string">"https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/spacex_launch_dash.csv"</span></span>
+</code></pre>
+    <p></p>
+    <ul>
+      <li>Download a skeleton Dash app to be completed in this lab:</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">nginx</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-nginx"><span class="hljs-attribute"><span class="hljs-attribute">wget</span></span> <span class="hljs-string"><span class="hljs-string">"https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/labs/module_3/spacex_dash_app.py"</span></span>
+</code></pre>
+    <p></p>
+    <ul>
+      <li>Test the skeleton app by running the following command in the terminal:</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">vim</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-vim"><span class="hljs-keyword">python3</span> spacex_dash_app.<span class="hljs-keyword">py</span>
+</code></pre>
+    <p></p>
+    <ul>
+      <li>Observe the port number (8050) shown in the terminal.</li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/port.png" alt="">
+    </p>
+    <ul>
+      <li>Click on the <code>Launch Application</code> option from the menu bar.</li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/launch.png" alt="">
+    </p>
+    <ul>
+      <li>Provide the port number 8050 and click <code>OK</code></li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/l_port.png" alt="">
+    </p>
+    <ul>
+      <li>You should see a nearly blank web page indicating a successfully running dash app.</li>
+    </ul>
+    <p>Next, let's fill the skeleton app with required input/output components and callback functions.</p>
+    <p>
+      If you need to refresh your memory about Plotly Dash components and callback functions,
+      you may refer to the lab you have learned before:
+    </p>
+    <p><a href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DV0101EN-SkillsNetwork/labs/Module%204/4.7_Dash_Interactivity.py" target="_blank" rel="external">Plotly Dash Lab</a></p>
+    <h2>TASK 1: Add a Launch Site Drop-down Input Component</h2>
+    <p>
+      We have four different launch sites and we would like to first see which one has the largest success count. Then,
+      we would like to select one specific site and check its detailed success rate (class=0 vs. class=1).
+    </p>
+    <p>As such, we will need a dropdown menu to let us select different launch sites.</p>
+    <ul>
+      <li>Find and complete a commented <code>dcc.Dropdown(id='site-dropdown',...)</code> input with following attributes:
+        <ul>
+          <li><code>id</code> attribute with value <code>site-dropdown</code></li>
+          <li>
+            <code>options</code> attribute is a list of dict-like option objects (with <code>label</code> and <code>value</code> attributes). You can set
+            the <code>label</code> and <code>value</code> all to be the launch site names in the <code>spacex_df</code>
+            and you need to include the default <code>All</code> option. e.g.,
+          </li>
+        </ul>
+        <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">scheme</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-scheme">  options=[{<span class="hljs-symbol">'label</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'All</span> Sites', <span class="hljs-symbol">'value</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'ALL</span>'},{<span class="hljs-symbol">'label</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'site1</span>', <span class="hljs-symbol">'value</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'site1</span>'}, ...]
+</code></pre>
+        <ul>
+          <li><code>value</code> attribute with default dropdown value to be <code>ALL</code> meaning all sites are selected</li>
+          <li>
+            <code>placeholder</code> attribute to show a text description about this input area,
+            such as <code>Select a Launch Site here</code>
+          </li>
+          <li><code>searchable</code> attribute to be True so we can enter keywords to search launch sites</li>
+        </ul>
+      </li>
+    </ul>
+    <p>Here is an example of <code>dcc.Dropdown</code>:</p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">scheme</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-scheme">  dcc.Dropdown(<span class="hljs-name">id=</span><span class="hljs-symbol">'id</span>',
+                options=[
+                    {<span class="hljs-symbol">'label</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'All</span> Sites', <span class="hljs-symbol">'value</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'ALL</span>'},
+                    {<span class="hljs-symbol">'label</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'site1</span>', <span class="hljs-symbol">'value</span><span class="hljs-symbol">':</span> <span class="hljs-symbol">'site1</span>'},
+                ],
+                value=<span class="hljs-symbol">'ALL</span>',
+                placeholder=<span class="hljs-string">"place holder here"</span>,
+                searchable=True
+                ),
+</code></pre>
+    <p>
+      If you need more help about <code>Dropdown()</code>, refer to the <code>Plotly Dash Reference</code> section towards
+      the end of this lab.
+    </p>
+    <p>
+      Your completed dropdown menu should look like the following screenshot:
+      
+      <img src="lab_theia_plotly_dash.md_files/site-dropdown.PNG" alt="">
+    </p>
+    <h1>TASK 2: Add a callback function to render <code>success-pie-chart</code> based on selected site dropdown</h1>
+    <p>
+      The general idea of this callback function is to get the selected launch site from <code>site-dropdown</code> and render
+      a pie chart visualizing launch success counts.
+    </p>
+    <p>
+      Dash callback function is a type of Python function which will be automatically called by
+      Dash whenever receiving an input component updates, such as a click or dropdown selecting event.
+    </p>
+    <p>
+      If you need to refresh your memory about Plotly Dash callback functions,
+      you may refer to the lab you have learned before:
+    </p>
+    <p><a href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DV0101EN-SkillsNetwork/labs/Module%204/4.7_Dash_Interactivity.py" target="_blank" rel="external">Plotly Dash Lab</a></p>
+    <p>Let's add a callback function in <code>spacex_dash_app.py</code> including the following application logic:</p>
+    <ul>
+      <li>Input is set to be the <code>site-dropdown</code> dropdown, i.e., <code>Input(component_id='site-dropdown', component_property='value')</code></li>
+      <li>Output to be the graph with id <code>success-pie-chart</code>, i.e., <code>Output(component_id='success-pie-chart', component_property='figure')</code></li>
+      <li>
+        A <code>If-Else</code> statement to check if ALL sites were selected or just a specific launch site was selected
+        <ul>
+          <li>If ALL sites are selected, we will use all rows in the dataframe <code>spacex_df</code> to render and return a pie chart graph to show the total success launches (i.e., the total count of <code>class</code> column)</li>
+          <li>If a specific launch site is selected, you need to filter the dataframe <code>spacex_df</code> first in order</li>
+        </ul>to include the only data for the selected site.
+        Then, render and return a pie chart graph to show the success (<code>class=1</code>) count and failed (<code>class=0</code>) count for the selected site.
+      </li>
+    </ul>
+    <p>Here is an example of a callback function:</p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ini</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-ini"><span class="hljs-comment"><span class="hljs-comment"># Function decorator to specify function input and output</span></span>
+@app.callback(Output(<span class="hljs-attr"><span class="hljs-attr">component_id</span></span>=<span class="hljs-string"><span class="hljs-string">'success-pie-chart'</span></span>, component_property=<span class="hljs-string"><span class="hljs-string">'figure'</span></span>),
+              Input(<span class="hljs-attr"><span class="hljs-attr">component_id</span></span>=<span class="hljs-string"><span class="hljs-string">'site-dropdown'</span></span>, component_property=<span class="hljs-string"><span class="hljs-string">'value'</span></span>))
+def get_pie_chart(entered_site):
+    <span class="hljs-attr"><span class="hljs-attr">filtered_df</span></span> = spacex_df
+    if <span class="hljs-attr"><span class="hljs-attr">entered_site</span></span> == <span class="hljs-string"><span class="hljs-string">'ALL'</span></span>:
+        <span class="hljs-attr"><span class="hljs-attr">fig</span></span> = px.pie(data, values=<span class="hljs-string"><span class="hljs-string">'class'</span></span>, 
+        <span class="hljs-attr"><span class="hljs-attr">names</span></span>=<span class="hljs-string"><span class="hljs-string">'pie chart names'</span></span>, 
+        <span class="hljs-attr"><span class="hljs-attr">title</span></span>=<span class="hljs-string"><span class="hljs-string">'title'</span></span>)
+        return fig
+    else:
+        <span class="hljs-comment"><span class="hljs-comment"># return the outcomes piechart for a selected site</span></span>
+</code></pre>
+    <p>The rendered pie chart should look like the following screenshots:</p>
+    <ul>
+      <li>Pie chart for all sites are selected</li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/pie-chart-all.PNG" alt="">
+    </p>
+    <ul>
+      <li>Pie chart for is selected</li>
+    </ul>
+    <p>
+      <img src="lab_theia_plotly_dash.md_files/pie-chart-one.PNG" alt="">
+    </p>
+    <p>
+      If you need more reference about dash callbacks and plotly pie charts, refer to the <code>Plotly Dash Reference</code> section towards
+      the end of this lab.
+    </p>
+    <h2>TASK 3: Add a Range Slider to Select Payload</h2>
+    <p>
+      Next, we want to find if variable payload is correlated to mission outcome. From a dashboard point of view, we
+      want to be able to easily select different payload range and see if we can identify some visual patterns.
+    </p>
+    <p>Find and complete a commented <code>dcc.RangeSlider(id='payload-slider',...)</code> input with the following attribute:</p>
+    <ul>
+      <li><code>id</code> to be <code>payload-slider</code></li>
+      <li><code>min</code> indicating the slider starting point, we set its value to be 0 (Kg)</li>
+      <li><code>max</code> indicating the slider ending point to, we set its value to be 10000 (Kg)</li>
+      <li><code>step</code> indicating the slider interval on the slider, we set its value to be 1000 (Kg)</li>
+      <li><code>value</code> indicating the current selected range, we could set it to be <code>min_payload</code> and <code>max_payload</code></li>
+    </ul>
+    <p>Here is an example of <code>RangeSlider</code>:</p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">routeros</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-routeros">dcc.RangeSlider(<span class="hljs-attribute">id</span>=<span class="hljs-string">'id'</span>,
+                <span class="hljs-attribute">min</span>=0, <span class="hljs-attribute">max</span>=10000, <span class="hljs-attribute">step</span>=1000,
+                marks={0: <span class="hljs-string">'0'</span>,
+                       100: <span class="hljs-string">'100'</span>},
+                value=[min_value, max_value])
+</code></pre>
+    <p>
+      You completed payload range slider should be similar the following screenshot:
+      
+      <img src="lab_theia_plotly_dash.md_files/range-slider.PNG" alt="">
+    </p>
+    <p>
+      If you need more reference about range slider, refer to the <code>Plotly Dash Reference</code> towards
+      the end of this lab.
+    </p>
+    <h1>TASK 4: Add a callback function to render the <code>success-payload-scatter-chart</code> scatter plot</h1>
+    <p>
+      Next, we want to plot a scatter plot with the x axis to be the payload and the y axis to be the launch outcome (i.e., <code>class</code> column).
+      As such, we can visually observe how payload may be correlated with mission outcomes for selected site(s).
+    </p>
+    <p>
+      In addition, we want to color-label the Booster version on each scatter point so that we may
+      observe mission outcomes with different boosters.
+    </p>
+    <p>Now, let's add a call function including the following application logic:</p>
+    <ul>
+      <li>
+        Input to be <code>[Input(component_id='site-dropdown', 
+component_property='value'), Input(component_id="payload-slider", 
+component_property="value")]</code>
+        Note that we have two input components, one to receive selected 
+launch site and another to receive selected payload range
+      </li>
+      <li>Output to be <code>Output(component_id='success-payload-scatter-chart', component_property='figure')</code></li>
+      <li>A <code>If-Else</code> statement to check if ALL sites were selected or just a specific launch site was selected
+        <ul>
+          <li>If ALL sites are selected, render a scatter plot to display all values for variable <code>Payload Mass (kg)</code> and variable <code>class</code>.</li>
+        </ul>In addition, the point color needs to be set to the booster version i.e., <code>color="Booster Version Category"</code>
+        <ul>
+          <li>If a specific launch site is selected, you need to filter the <code>spacex_df</code> first, and render a scatter chart to show</li>
+        </ul>values <code>Payload Mass (kg)</code> and <code>class</code> for the selected site, and color-label the point using <code>Boosster Version Category</code> likewise.
+      </li>
+    </ul>
+    <p>
+      You rendered scatter point should look like the following screenshot:
+      
+      <img src="lab_theia_plotly_dash.md_files/scatter-point.PNG" alt="">
+    </p>
+    <p>
+      If you need more reference about dash callbacks and plotly scatter plots, refer to the <code>Plotly Dash Reference</code> towards
+      the end of this lab.
+    </p>
+    <h2>Finding Insights Visually</h2>
+    <p>Now with the dashboard completed, you should be able to use it to
+ analyze SpaceX launch data, and answer the following questions:</p>
+    <ol>
+      <li>Which site has the largest successful launches?</li>
+      <li>Which site has the highest launch success rate?</li>
+      <li>Which payload range(s) has the highest launch success rate?</li>
+      <li>Which payload range(s) has the lowest launch success rate?</li>
+      <li>Which F9 Booster version (<code>v1.0</code>, <code>v1.1</code>, <code>FT</code>, <code>B4</code>, <code>B5</code>, etc.) has the highest</li>
+    </ol>
+    <p>launch success rate?</p>
+    <h2>Plotly Dash Reference</h2>
+    <h3>Dropdown (input) component</h3>
+    <p>Refer <a href="https://dash.plotly.com/dash-core-components/dropdown?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMDS0321ENSkillsNetwork26802033-2021-01-01" target="_blank" rel="external">here</a> for more details about <code>dcc.Dropdown()</code></p>
+    <h3>Range slider (input) component</h3>
+    <p>Refer <a href="https://dash.plotly.com/dash-core-components/rangeslider?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMDS0321ENSkillsNetwork26802033-2021-01-01" target="_blank" rel="external">here</a> for more details about <code>dcc.RangeSlider()</code></p>
+    <h3>Pie chart (output) component</h3>
+    <p>Refer <a href="https://plotly.com/python/pie-charts/?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMDS0321ENSkillsNetwork26802033-2021-01-01" target="_blank" rel="external">here</a> for more details about plotly pie charts</p>
+    <h3>Scatter chart (output) component</h3>
+    <p>Refer <a href="https://plotly.com/python/line-and-scatter/?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMDS0321ENSkillsNetwork26802033-2021-01-01" target="_blank" rel="external">here</a> for more details about plotly scatter charts</p>
+    <h2>Author</h2>
+    <p><a href="https://www.linkedin.com/in/yan-luo-96288783/?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMDS0321ENSkillsNetwork26802033-2021-01-01" target="_blank" rel="external">Yan Luo</a></p>
+    <h2>Other contributor(s)</h2>
+    <p>Joseph Santarcangelo</p>
+    <h2>Changelog</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Version</th>
+          <th>Changed by</th>
+          <th>Change Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>03-09-2021</td>
+          <td>1.1</td>
+          <td>Lakshmi Holla</td>
+          <td>Added a note.</td>
+        </tr>
+        <tr>
+          <td>06-01-2021</td>
+          <td>1.0</td>
+          <td>Yan</td>
+          <td>Initial version created</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2></h2>
+    <h3 align="center">© IBM Corporation 2021. All rights reserved.</h3>
+    <h3></h3>
+    <script>window.addEventListener('load', function() {
+snFaculty.inject();
+});</script>
+    <script src="lab_theia_plotly_dash.md_files/inject.js"></script>
+    <script src="lab_theia_plotly_dash.md_files/highlight.js"></script>
+    <script src="lab_theia_plotly_dash.md_files/highlightjs-badge.js"></script>
+  
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>
